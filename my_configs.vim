@@ -16,7 +16,7 @@ au BufRead,BufNewFile make.inc set filetype=make
 """"""""""""""""""""""""""""""
 au BufRead,BufNewFile *.acs set filetype=lua
 
-set gfn=Hack\ 10,Source\ Code\ Pro\ 10
+set gfn=Go\ Mono\ 10,Hack\ 10,Source\ Code\ Pro\ 10
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lightline
@@ -24,11 +24,11 @@ set gfn=Hack\ 10,Source\ Code\ Pro\ 10
 "set fillchars+=stl:\ " this is a comment to prevent problems with the whitespace
 "set fillchars+=stlnc:\*" this is a comment to prevent problems with the whitespace
 
-let g:lightline = { 
+let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
-let g:lightline = { 
+let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ 'active': {
       \   'left': [ ['mode', 'paste'],
