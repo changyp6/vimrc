@@ -17,7 +17,7 @@ au BufRead,BufNewFile make.inc set filetype=make
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 au BufRead,BufNewFile *.acs set filetype=lua
 
-set gfn=Go\ Mono\ 10,Hack\ 10,Source\ Code\ Pro\ 10
+set gfn=Go\ Mono\ for\ Powerline\ 10,Hack\ 10,Source\ Code\ Pro\ 10
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => lightline
