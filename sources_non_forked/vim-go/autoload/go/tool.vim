@@ -1,3 +1,7 @@
+" don't spam the user when Vim is started in Vi compatibility mode
+let s:cpo_save = &cpo
+set cpo&vim
+
 " From "go list -h".
 function! go#tool#ValidFiles(...)
   let l:list = ["GoFiles", "CgoFiles", "IgnoredGoFiles", "CFiles", "CXXFiles",
@@ -36,7 +40,7 @@ function! go#tool#Files(...) abort
     endif
   endfor
 
-  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-f', l:combined])
+  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-tags', go#config#BuildTags(), '-f', l:combined])
   return split(l:out, '\n')
 endfunction
 
@@ -46,7 +50,7 @@ function! go#tool#Deps() abort
   else
     let format = "{{range $f := .Deps}}{{$f}}\n{{end}}"
   endif
-  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-f', l:format])
+  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-tags', go#config#BuildTags(), '-f', l:format])
   return split(l:out, '\n')
 endfunction
 
@@ -57,14 +61,14 @@ function! go#tool#Imports() abort
   else
     let format = "{{range $f := .Imports}}{{$f}}{{printf \"\\n\"}}{{end}}"
   endif
-  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-f', l:format])
+  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-tags', go#config#BuildTags(), '-f', l:format])
   if l:err != 0
     echo out
     return imports
   endif
 
   for package_path in split(out, '\n')
-    let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-f', '{{.Name}}', l:package_path])
+    let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-tags', go#config#BuildTags(), '-f', '{{.Name}}', l:package_path])
     if l:err != 0
       echo out
       return imports
@@ -76,19 +80,19 @@ function! go#tool#Imports() abort
   return imports
 endfunction
 
-function! go#tool#Info(auto) abort
+function! go#tool#Info(showstatus) abort
   let l:mode = go#config#InfoMode()
   if l:mode == 'gocode'
-    call go#complete#Info(a:auto)
+    call go#complete#Info(a:showstatus)
   elseif l:mode == 'guru'
-    call go#guru#DescribeInfo()
+    call go#guru#DescribeInfo(a:showstatus)
   else
     call go#util#EchoError('go_info_mode value: '. l:mode .' is not valid. Valid values are: [gocode, guru]')
   endif
 endfunction
 
 function! go#tool#PackageName() abort
-  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-f', '{{.Name}}'])
+  let [l:out, l:err] = go#tool#ExecuteInDir(['go', 'list', '-tags', go#config#BuildTags(), '-f', '{{.Name}}'])
   if l:err != 0
       return -1
   endif
@@ -212,5 +216,9 @@ function! go#tool#OpenBrowser(url) abort
         call go#util#System(l:cmd)
     endif
 endfunction
+
+" restore Vi compatibility settings
+let &cpo = s:cpo_save
+unlet s:cpo_save
 
 " vim: sw=2 ts=2 et
