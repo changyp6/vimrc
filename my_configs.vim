@@ -58,3 +58,8 @@ let g:syntastic_c_remove_include_errors = 1
 
 " Disable include search
 let g:syntastic_c_no_include_search = 1
+
+map <leader>t2 :set tabstop=2  shiftwidth=2  softtabstop=2<CR>
+map <leader>t4 :set tabstop=4  shiftwidth=4  softtabstop=4<CR>
+map <leader>t8 :set tabstop=8  shiftwidth=8  softtabstop=8<CR>
+map <leader>t0 :set tabstop=16 shiftwidth=16 softtabstop=16<CR>
